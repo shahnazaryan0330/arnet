@@ -1,0 +1,53 @@
+@media (max-width: 992px) {
+   .tariffs-list {
+      overflow: scroll;
+      scrollbar-width: none;
+   }
+
+   .tariffs-list__item {
+      width: 250px;
+      min-width: 250px;
+   }
+
+   .form input,
+   .form textarea {
+      width: 70%;
+   }
+}
+
+@media (max-width: 700px) {
+   .nav-list {
+      overflow: scroll;
+      scrollbar-width: none;
+   }
+
+   .questions-list__item {
+      width: 100%;
+   }
+
+   .form input,
+   .form textarea {
+      width: 100%;
+   }
+}
+
+@media (max-width: 540px) {
+   .nav-row:nth-child(1) .nav-row__inner {
+      flex-wrap: wrap;
+      justify-content: center;
+   }
+}
+
+@media (max-width: 420px) {
+   .header-block {
+      gap: 10px;
+   }
+
+   .button-group {
+      flex-basis: 70px;
+   }
+
+   .individual-btn {
+      margin-bottom: 5px;
+   }
+}
