@@ -109,12 +109,27 @@ function createTariffElement(obj) {
    freeWifi.textContent = 'Անվճար Wi-fi սարք'
    li.append(freeWifi)
 
+   const button = document.createElement('button')
+   button.classList.add('btn', 'tariffs__btn')
+   button.textContent = 'Լրացնել հայտ'
+
+   button.setAttribute('id', obj.name)
+
+   button.addEventListener('click', event => {
+      document.querySelector('.request-modal').style.display = 'flex'
+      createTariffInclude([...individualList, ...businessList], event.target.id)
+   })
+   li.append(button)
+
    return li
 }
 
-document.querySelector('.tariffs__btn')
-   .addEventListener('click', () => {
-      document.querySelector('.request-modal').style.display = 'flex'
+document.querySelectorAll('.tariffs__btn')
+   .forEach(item => {
+      item.addEventListener('click', event => {
+         document.querySelector('.request-modal').style.display = 'flex'
+         createTariffInclude([...individualList, ...businessList], event.target.id)
+      })
    })
 
 document.querySelector('.pay-btn')
@@ -132,76 +147,24 @@ window.addEventListener('click', event => {
    }
 })
 
-const requestModalBtns = [
-   document.querySelector('.request-modal__individual'),
-   document.querySelector('.request-modal__business')
-]
+function createTariffInclude(arr, id) {
+   let {name, mbit, price} = arr.find(item => item.name.toLowerCase() === id.toLowerCase())
 
-requestModalBtns.forEach(item => {
-   item.addEventListener('click', event => {
-      document.querySelector('.resquest-modal__btn_active').classList.remove('resquest-modal__btn_active')
-      event.target.classList.add('resquest-modal__btn_active')
+   const findItem = {}
 
-      const requestFormSelect = document.querySelector('.request-form__select')
-      requestFormSelect.textContent = ''
-      if (event.target.classList.contains('request-modal__individual')) {
-         individualList.forEach(item => {
-            const option = document.createElement('option')
-            option.setAttribute('value', item.name)
-            option.textContent = item.name
-            requestFormSelect.append(option)
-         })
+   findItem.name = `Փաթեթ ${name}`
+   findItem.mbit = `Արագություն ${mbit}մբիթ/վ`
+   findItem.price = `Գինը ${price} դրամ/ամիս`
+   findItem.freeInstall = 'Անվճար տեղադրում'
+   findItem.freeWifi = 'Անվճար Wi-fi սարք'
 
-         createTariffInclude(individualList, 'AR-1')
-      }
-      else {
-         businessList.forEach(item => {
-            const option = document.createElement('option')
-            option.setAttribute('value', item.name)
-            option.textContent = item.name
-            requestFormSelect.append(option)
-         })
-         createTariffInclude(businessList, 'AR BUSINESS')
-      }
-   })
-})
+   const tariffInclude = document.querySelector('.tariff-include')
+   tariffInclude.innerText = ''
 
-function createTariffInclude(arr, event) {
-   arr.forEach(item => {
-      if (Object.keys(item).find(key => item[key] === event)) {
-         const tariffInclude = document.querySelector('.tariff-include')
-         tariffInclude.textContent = ''
+   for(let key in findItem) {
+      const div = document.createElement('div')
+      div.innerText = findItem[key]
 
-         const div1 = document.createElement('div')
-         div1.textContent = `Ամսեվճար ${item.price}դրամ`
-         tariffInclude.append(div1)
-
-         const div2 = document.createElement('div')
-         div2.textContent = `${item.mbit}մբիթ/վ արագություն`
-         tariffInclude.append(div2)
-
-         const div3 = document.createElement('div')
-         div3.textContent = 'Անվճար տեղադրում'
-         tariffInclude.append(div3)
-
-         const div4 = document.createElement('div')
-         div4.textContent = 'Անվճար Wi-fi սարք'
-         tariffInclude.append(div4)
-
-         return
-      }
-   })
+      tariffInclude.append(div)
+   }
 }
-
-const requestFormSelect = document.querySelector('.request-form__select')
-
-requestFormSelect.addEventListener('input', event => {
-   const activeBtn = document.querySelector('.resquest-modal__btn_active')
-
-   if (activeBtn.classList.contains('request-modal__individual')) {
-      createTariffInclude(individualList, event.target.value.toUpperCase())
-   }
-   else {
-      createTariffInclude(businessList, event.target.value.toUpperCase())
-   }
-})
