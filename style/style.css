@@ -121,7 +121,8 @@ body {
    line-height: 160%;
 }
 
-.nav,
+/* .nav, */
+.header,
 .advantages,
 .tariffs,
 .questions {
